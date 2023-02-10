@@ -2,8 +2,10 @@ import SQL_Connection.SQL_Con;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.PriorityQueue;
 import java.util.Scanner;
 
 public class Main {
@@ -26,8 +28,9 @@ public class Main {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
 
-        System.out.println("Choose what you want to do with db: add, update or delete ");
+        System.out.println("Choose what you want to do with db: add, update, delete or display in the console");
         String choice = in.nextLine();
+        //ADD
         if (choice.equals("add")) {
             System.out.println("What do you want to add: products, users or orders");
             String tableChoice = in.nextLine();
@@ -43,7 +46,6 @@ public class Main {
                     System.out.println("Insert price of the " + a + " product");
                     float price = in.nextFloat();
                     in.nextLine();
-
                     try (PreparedStatement statement = db.getConnection().prepareStatement("INSERT INTO products(id, name, price)VALUES(?, ?, ?)")) {
                         statement.setInt(parameterIdProducts, id);
                         statement.setString(parameterNameProducts, name);
@@ -79,7 +81,6 @@ public class Main {
                     System.out.println("Insert telephone of the" + a + " user");
                     int telephone = in.nextInt();
                     in.nextLine();
-
                     try (PreparedStatement statement2 = db.getConnection().prepareStatement("INSERT INTO products(id, name, price)VALUES(?, ?, ?, ?, ?, ?)")) {
                         statement2.setInt(parameterIdUser, id);
                         statement2.setString(parameterNameUser, name);
@@ -93,6 +94,35 @@ public class Main {
                     }
                 }
                 db.closeConnection();
+            }
+        //DELETE
+        } else if (choice.equals("delete")) {
+            System.out.println("What date do you want to be deleted: table, column or parameters");
+            String deleteChoice = in.nextLine();
+            if (deleteChoice.equals("table")) {
+                System.out.println("What table do you want to be deleted? users, products, orders");
+                String tableChoice = in.nextLine();
+                if (tableChoice.equals("users")) {
+                    try (PreparedStatement statement = db.getConnection().prepareStatement("DROP TABLE IF EXISTS users")) {
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    db.closeConnection();
+                } else if (tableChoice.equals("products")) {
+                    try (PreparedStatement statement = db.getConnection().prepareStatement("DROP TABLE IF EXISTS products")) {
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    db.closeConnection();
+                } else if (tableChoice.equals("orders")) {
+                    try (PreparedStatement statement = db.getConnection().prepareStatement("DROP TABLE IF EXISTS orders")) {
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    db.closeConnection();
+                }else{
+                    System.out.println("There`s no such table");
+                }
             }
         }
     }
