@@ -1,16 +1,28 @@
 import SQL_Connection.SQL_Con;
+import entity.Order;
+import entity.Product;
+import entity.User;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.PriorityQueue;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        SQL_Con db = new SQL_Con();
+//        Order order = new Order.OrderBuilder()
+//                .setId(1)
+//                .setUser(new User())
+//                .setProduct(new Product())
+//                .setDate(LocalDate.now())
+//                .setPrice(1000)
+//                .setItemCount(5)
+//                .build();
+
 
         int parameterIdProducts = 1;
         int parameterNameProducts = 2;
@@ -55,45 +67,6 @@ public class Main {
                         throw new RuntimeException(e);
                     }
                 }
-                db.closeConnection();
-            } else if (tableChoice.equals("users")) {
-                System.out.println("How many users do you want to add");
-                int usersQuantity = in.nextInt();
-                for (int a = 1; a < usersQuantity + 1; a++) {
-                    System.out.println("Insert name of the " + a + " user");
-                    String name = in.nextLine();
-                    in.nextLine();
-                    System.out.println("Insert id of " + a + " user");
-                    int id = in.nextInt();
-                    System.out.println("Insert address of the " + a + " product");
-                    String address = in.nextLine();
-                    in.nextLine();
-                    System.out.println("Insert email of the " + a + " user");
-                    String email = in.nextLine();
-                    System.out.println("Insert birthday (dd/MM/yyyy) of the" + a + " user");
-                    String birthday = in.nextLine();
-                    try {
-                        Date date = dateFormat.parse(birthday);
-                        System.out.println("Date: " + dateFormat.format(date));
-                    } catch (Exception e) {
-                        System.out.println("Invalid date format");
-                    }
-                    System.out.println("Insert telephone of the" + a + " user");
-                    int telephone = in.nextInt();
-                    in.nextLine();
-                    try (PreparedStatement statement2 = db.getConnection().prepareStatement("INSERT INTO products(id, name, price)VALUES(?, ?, ?, ?, ?, ?)")) {
-                        statement2.setInt(parameterIdUser, id);
-                        statement2.setString(parameterNameUser, name);
-                        statement2.setString(parameterAddressUser, address);
-                        statement2.setString(parameterEmailUser, email);
-                        statement2.setString(parameterBirthdayUser, birthday);
-                        statement2.setFloat(parameterTelephoneUser, telephone);
-                        statement2.executeUpdate();
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                db.closeConnection();
             }
         //DELETE
         } else if (choice.equals("delete")) {

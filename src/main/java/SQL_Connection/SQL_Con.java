@@ -1,8 +1,10 @@
 package SQL_Connection;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.sql.*;
 
-public class SQL_Con {
+public class SQL_Con implements AutoCloseable {
     private static final String URL = "jdbc:postgresql://localhost:5432/postgres";
     private static final String USER = "postgres";
     private static final String PASSWORD = "admin";
@@ -27,5 +29,10 @@ public class SQL_Con {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void close() {
+        closeConnection();
     }
 }
