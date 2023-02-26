@@ -51,7 +51,7 @@ public class User {
             return this;
         }
 
-        public User user(){
+        public User build(){
             if(name==null || address==null || email==null || birthday==null || telephone<=0){
                 throw new RuntimeException("Trying to create an empty user");
             }
